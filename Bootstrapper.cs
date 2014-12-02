@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MvcStarterKit.Abstractions;
+using MvcStarterKit.Models;
 using MvcStarterKit.Services;
 
 namespace MvcStarterKit
@@ -45,12 +46,18 @@ namespace MvcStarterKit
             return this;
         }
 
-        public Bootstrapper InstallDatabase(Action<IDbConnection> dbCreationAction = null)
+        public Bootstrapper InstallDatabase(DatabaseConfiguration configuration = null, Action<IDbConnection> dbCreationAction = null)
         {
+            if (configuration != null)
+            {
+                DbHelper.Configure(configuration);
+            }
+
             if (dbCreationAction != null)
             {
                 DbHelper.Execute(dbCreationAction);
             }
+
             return this;
         }
 
